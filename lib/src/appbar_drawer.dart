@@ -279,10 +279,12 @@ class _AppBarExample {
 
     /// flexibleSpace
     if (drawer.flexibleSpace) {
-      flexibleSpace = const FlexibleSpaceBar(
-        title: Text('This is Flexible space!'),
-        centerTitle: true,
-      );
+      flexibleSpace = Center(
+          child: Text("This is behind the Title",
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 16.0,
+              )));
     } else {
       flexibleSpace = null;
     }
@@ -307,9 +309,9 @@ class _AppBarExample {
     }
 
     /// shadowColor
-    if(drawer.shadowColor){
+    if (drawer.shadowColor) {
       shadowColor = Colors.deepOrange;
-    }else{
+    } else {
       shadowColor = null;
     }
 
