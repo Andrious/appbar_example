@@ -3,26 +3,28 @@ import 'package:flutter/material.dart';
 import 'package:set_state/set_state.dart';
 
 class BottomSetting {
-  factory BottomSetting(Brightness brightness, Function(Brightness v) func) =>
+  factory BottomSetting(Brightness brightness, void Function(Brightness v) func) =>
       _this ??= BottomSetting._(brightness, func);
-  static BottomSetting _this;
-  BottomSetting._(Brightness brightness, Function(Brightness v) func) {
+  BottomSetting._(Brightness brightness, void Function(Brightness v) func) {
     radio = GroupValue<Brightness>(brightness, func);
   }
-  GroupValue radio;
+  static BottomSetting _this;
+
+  GroupValue<Brightness> radio;
+
   Column get radioButtons {
     return Column(children: [
-      Text('Brightness'),
+      const Text('Brightness'),
       Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Text('Light'),
+          const Text('Light'),
           Radio(
             value: Brightness.light,
             groupValue: radio.groupValue,
             onChanged: (v) => radio.onChanged(v),
           ),
-          Text('Dark'),
+          const Text('Dark'),
           Radio(
             value: Brightness.dark,
             groupValue: radio.groupValue,
@@ -35,26 +37,28 @@ class BottomSetting {
 }
 
 class BrightnessSetting {
-  factory BrightnessSetting(Brightness brightness, Function(Brightness v) func) =>
+  factory BrightnessSetting(
+          Brightness brightness, void Function(Brightness v) func) =>
       _this ??= BrightnessSetting._(brightness, func);
-  static BrightnessSetting _this;
-  BrightnessSetting._(Brightness brightness, Function(Brightness v) func) {
+  BrightnessSetting._(Brightness brightness, void Function(Brightness v) func) {
     radio = GroupValue<Brightness>(brightness, func);
   }
-  GroupValue radio;
+  static BrightnessSetting _this;
+
+  GroupValue<Brightness> radio;
   Column get radioButtons {
     return Column(children: [
-      Text('Brightness'),
+      const Text('Brightness'),
       Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Text('Light'),
+          const Text('Light'),
           Radio(
             value: Brightness.light,
             groupValue: radio.groupValue,
             onChanged: (v) => radio.onChanged(v),
           ),
-          Text('Dark'),
+          const Text('Dark'),
           Radio(
             value: Brightness.dark,
             groupValue: radio.groupValue,
@@ -69,15 +73,17 @@ class BrightnessSetting {
 class GroupValue<E> {
   GroupValue(this.groupValue, this.func) {
     // Retrieve the most recent SetState object instantiated.
-    state = StateSet.of();
+    state = StateSet.root;
   }
   E groupValue;
-  final Function(E v) func;
+  final void Function(E v) func;
   StateSet state;
 
   void onChanged<T>(T v) => state?.setState(() {
-    var value = v as E;
-    groupValue = value;
-    func(value);
-  });
+//        final value = v as E;
+        if (v is E) {
+          groupValue = v;
+          func(v);
+        }
+      });
 }
